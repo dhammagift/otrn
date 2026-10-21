@@ -52,7 +52,7 @@ examples/sample-run/    пример отчёта
 - Локально: `/root/.secrets/tools.env` (вне репозитория).
 - GitHub Actions secrets:
   - `KAGGLE_API_TOKEN` — Kaggle API.
-  - `OFFLINE_DATA_SSH_KEY` — приватный SSH deploy key с write на `offline-data`.
+  - `OFFLINE_DATA_TOKEN` — fine-grained PAT, Contents: Read and write на `offline-data`.
 - Никогда не коммитить `.env`, `bench/.env`, токены.
 - В workflow токены только через `${{ secrets.* }}`.
 
@@ -130,10 +130,10 @@ kaggle b t download mn-avuso-full-0 -o results/full/shard-0 -f
 ## Веб-режим
 
 `run-mn.yml`: 8 shard-jobs (matrix) + apply-job.
-Секреты: `KAGGLE_API_TOKEN`, `OFFLINE_DATA_SSH_KEY`.
+Секреты: `KAGGLE_API_TOKEN`, `OFFLINE_DATA_TOKEN` (fine-grained PAT).
 `run-shard.yml`: один шард.
 
-`apply_edits.py` сам определяет SSH-remote и пушит без PAT.
+`apply_edits.py` поддерживает HTTPS PAT и SSH deploy key.
 
 ## Подводные камни
 
