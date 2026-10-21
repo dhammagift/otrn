@@ -111,7 +111,9 @@ def validate_replace(edit: dict, allow_name_addition: bool = True) -> tuple[bool
         extra_word = next((w for w in words(new_wo) if w.casefold() == extra[0]), "")
         if not extra_word or not extra_word[0].isupper():
             return False, "other words changed"
-    if punct(old) != punct(new):
+    # Commas are allowed to change (the canonical rule adds one before «товарищ»).
+    # All other punctuation must stay identical.
+    if [p for p in punct(old) if p != ","] != [p for p in punct(new) if p != ","]:
         return False, "punctuation changed"
     if float(edit.get("confidence") or 0) < CONF_MIN:
         return False, "low confidence"

@@ -29,6 +29,7 @@ work/insertions.yaml    ручные overrides: insert / replace / keep / skip
 work/edits_full.jsonl   замороженный полный результат (1506)
 work/manual-fixes.yaml  ручные post-фиксы после прогона (пунктуация/артефакты)
 work/normalize_comrades.py  постпозиция «товарищ» + запятые (сканирует все MN)
+docs/avuso-rules.md       канонические правила āvuso → товарищ
 dataset/                segments_*.jsonl + manifest
 examples/sample-run/    пример отчёта
 .github/workflows/      run-mn.yml, apply-only.yml, run-shard.yml
@@ -113,7 +114,7 @@ kaggle b t download mn-avuso-full-0 -o results/full/shard-0 -f
 ```json
 {"id":"mn32:9.10","file":"dhammagift/...json","key":"mn32:9.10",
  "pali":"...","ru":"...","action":"insert",
- "anchor_before":"Это как","anchor_after":"если бы","insert":"Моггаллана товарищ",
+ "anchor_before":"Это как","anchor_after":"если бы","insert":"Моггаллана, товарищ",
  "source":"","target":"","old":"","new":"","reason":"","confidence":0.95}
 ```
 
@@ -123,9 +124,10 @@ kaggle b t download mn-avuso-full-0 -o results/full/shard-0 -f
 
 - `replace`: `old` есть в RU; `source` — форма «друг»; `target` — форма «товарищ»;
   после удаления source/target остальные слова совпадают (порядок может меняться);
-  пунктуация та же; `confidence >= 0.75`; `old` уникален.
+  пунктуация, кроме запятых, та же; `confidence >= 0.75`; `old` уникален.
 - `insert`: `anchor_before + anchor_after` есть в RU; `insert` содержит «товарищ»;
-  итог = `anchor_before, insert, anchor_after`.
+  итог = `anchor_before, insert, anchor_after` (в `insert` запятая уже стоит).
+- Подробно: `docs/avuso-rules.md`.
 - Всё невалидное → `disputed`, в ветку не идёт.
 - Plain-файл с правками: оригинал → `dhammagift/svEtc/automatic/<basename>`,
   файл → `...+edited+o.json`.
