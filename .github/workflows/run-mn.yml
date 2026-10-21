@@ -1,0 +1,96 @@
+name: run-mn
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "apply edits and push branch rename"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Kaggle CLI
+        run: pip install kaggle==2.2.4
+
+      - name: Run shard ${{ matrix.index }}
+        env:
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+          KAGGLE_DATASET: dhammagift/rename-mn
+        run: python work/run_shard.py --index ${{ matrix.index }} --count 8
+
+      - name: Upload shard ${{ matrix.index }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.index }}
+          path: results/full/shard-${{ matrix.index }}/
+          if-no-files-found: error
+
+  apply:
+    needs: shard
+    if: ${{ inputs.apply }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pymorphy3 pyyaml kaggle==2.2.4
+
+      - name: Download shard outputs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-*
+          path: results/full
+
+      - name: Clone offline-data
+        env:
+          TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
+        run: |
+          git clone --filter=blob:none --sparse --depth 1 \
+            "https://x-access-token:${TOKEN}@github.com/dhammagift/offline-data.git" \
+            offline-data
+          git -C offline-data sparse-checkout set \
+            dhammagift/translation/ru \
+            forAI \
+            dhammagift/svEtc/automatic
+
+      - name: Merge shards
+        run: python work/merge_shards.py --count 8
+
+      - name: Apply and push rename
+        env:
+          GITHUB_TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
+        run: |
+          python work/apply_edits.py \
+            --edits work/edits_full.jsonl \
+            --config work/insertions.yaml \
+            --push
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: out/
+          if-no-files-found: ignore
