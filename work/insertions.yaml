@@ -1,0 +1,11 @@
+# Ручные правки вставок для пропущенного āvuso.
+# Меняйте anchor_before / insert / anchor_after и перезапускайте apply без ИИ.
+enabled: true
+use_model_insertions: true
+separator: ", "
+overrides:
+  "mn32:9.10":
+    insert: "Моггаллана товарищ"
+    anchor_before: "Это как"
+    anchor_after: "если бы"
+skip: []

@@ -1,0 +1,17 @@
+file	key	pali	ru	old	new	action	reason	confidence	anchor_before	insert	anchor_after
+dhammagift/translation/ru/sutta/mn/mn119_translation-ru-o.json	mn119:2.2	“acchariyaṁ, āvuso, abbhutaṁ, āvuso. 	“Удивительно, товарищи, поразительно, товарищи. 			keep	keep: В русском тексте обращение «товарищи» уже присутствует	1.0			
+dhammagift/translation/ru/sutta/mn/mn119_translation-ru-o.json	mn119:2.8	‘acchariyaṁ, āvuso, abbhutaṁ, āvuso. 	“Удивительно, товарищи, поразительно, товарищи. 			keep	keep: В русском тексте обращение «товарищи» уже присутствует	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:3.4	Āyāmāvuso revata, yenāyasmā sāriputto tenupasaṅkamissāma dhammassavanāyā”ti. 				keep	keep: сегмент пуст в RU	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:3.5	“Evamāvuso”ti kho āyasmā revato āyasmato ānandassa paccassosi. 				keep	keep: сегмент пуст в RU	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:12.2	‘byākataṁ kho, āvuso revata, āyasmatā ānandena yathāsakaṁ paṭibhānaṁ. 				keep	keep: RU пусто / āvuso опущено	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:12.4	ramaṇīyaṁ, āvuso revata, gosiṅgasālavanaṁ, dosinā ratti, sabbaphāliphullā sālā, dibbā maññe gandhā sampavanti. 				keep	keep: RU пуст	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:12.5	Kathaṁrūpena, āvuso revata, bhikkhunā gosiṅgasālavanaṁ sobheyyā’ti? 				keep	keep: RU пуст	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:13.2	‘byākataṁ kho, āvuso anuruddha, āyasmatā revatena …pe… 				keep	keep: RU пуст	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:13.3	kathaṁrūpena, āvuso anuruddha, bhikkhunā gosiṅgasālavanaṁ sobheyyā’ti. 				keep	keep: RU пуст	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:13.6	Seyyathāpi, āvuso sāriputta, cakkhumā puriso …pe… 				keep	keep: RU пуст	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:14.2	‘byākataṁ kho, āvuso kassapa, āyasmatā anuruddhena yathāsakaṁ paṭibhānaṁ. 				keep	keep: RU пустой, āvuso опущено	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:14.4	kathaṁrūpena kho, āvuso kassapa, bhikkhunā gosiṅgasālavanaṁ sobheyyā’ti? 				keep	keep: RU пустой, āvuso опущено	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:15.2	‘byākataṁ kho, āvuso moggallāna, āyasmatā mahākassapena yathāsakaṁ paṭibhānaṁ. 				keep	keep: RU пустой, āvuso опущено	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:15.4	kathaṁrūpena, āvuso moggallāna, bhikkhunā gosiṅgasālavanaṁ sobheyyā’ti? 				keep	keep: RU пустой, āvuso опущено	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:16.12	Seyyathāpi, āvuso moggallāna, rañño vā rājamahāmattassa vā nānārattānaṁ dussānaṁ dussakaraṇḍako pūro assa. 				keep	keep: перевод отсутствует	1.0			
+dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	mn32:16.16	Evameva kho, āvuso moggallāna, bhikkhu cittaṁ vasaṁ vatteti, no ca bhikkhu cittassa vasena vattati. 				keep	keep: перевод отсутствует	1.0			

@@ -1,0 +1,23 @@
+key	file	source	anchor_before	insert	anchor_after	new	confidence
+mn32:4.9	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:5.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:6.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Подобно	Сарипутта товарищ	человеку	Подобно, Сарипутта товарищ, человеку	0.95
+mn32:6.8	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	точно так же	Сарипутта товарищ	божественным глазом	точно так же, Сарипутта товарищ, божественным глазом	0.95
+mn32:6.9	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:7.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:8.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:9.10	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	override	Это как	Моггаллана товарищ	если бы	Это как, Моггаллана товарищ, если бы	1.0
+mn32:9.14	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Точно так же	Моггаллана товарищ	монах	Точно так же, Моггаллана товарищ, монах	0.95
+mn32:9.18	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Моггаллана товарищ	мог бы	Этот монах, Моггаллана товарищ, мог бы	0.95
+mn32:10.3	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Пойдёмте	товарищи	к Благословенному	Пойдёмте, товарищи, к Благословенному	0.95
+mn32:11.11	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:12.8	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:13.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:14.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Сарипутта товарищ	мог бы	Этот монах, Сарипутта товарищ, мог бы	0.95
+mn32:15.7	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Такой монах	Сарипутта товарищ	мог бы	Такой монах, Сарипутта товарищ, мог бы	0.95
+mn32:16.20	dhammagift/translation/ru/sutta/mn/mn32_translation-ru-sv+edited+o.json	model	Этот монах	Моггаллана товарищ	мог бы	Этот монах, Моггаллана товарищ, мог бы	0.95
+mn5:2.3	dhammagift/translation/ru/sutta/mn/mn5_translation-ru-sv+edited+o.json	model	Бывает так	товарищи	когда	Бывает так, товарищи, когда	0.95
+mn5:2.4	dhammagift/translation/ru/sutta/mn/mn5_translation-ru-sv+edited+o.json	model	Бывает так	товарищи	когда	Бывает так, товарищи, когда	0.95
+mn5:2.5	dhammagift/translation/ru/sutta/mn/mn5_translation-ru-sv+edited+o.json	model	Бывает так	товарищи	когда	Бывает так, товарищи, когда	0.95
+mn5:2.6	dhammagift/translation/ru/sutta/mn/mn5_translation-ru-sv+edited+o.json	model	Бывает так	товарищи	когда	Бывает так, товарищи, когда	0.95
+mn5:2.7	dhammagift/translation/ru/sutta/mn/mn5_translation-ru-sv+edited+o.json	model	Человек с изъяном	товарищи	который	Человек с изъяном, товарищи, который	0.9

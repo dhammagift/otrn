@@ -1,0 +1,10 @@
+{
+  "model": "gemini-3.8-flash (replace + insert)",
+  "edits": 80,
+  "replace": 42,
+  "insert": 22,
+  "disputed": 16,
+  "renamed": [],
+  "errors": [],
+  "config": "work/insertions.yaml"
+}

@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+offline-data/
+sc-data/
+results/
+logs/
+out*/
+bench/.env
+bench/shards/
+bench/*.run.json
+bench/*.task.json
+.env
