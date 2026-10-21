@@ -27,6 +27,7 @@ work/merge_shards.py    слияние shard-*/edits.jsonl
 work/apply_edits.py     валидация, splice, rename/archive, отчёт, push
 work/insertions.yaml    ручные overrides: insert / replace / keep / skip
 work/edits_full.jsonl   замороженный полный результат (1506)
+work/manual-fixes.yaml  ручные post-фиксы после прогона (пунктуация/артефакты)
 dataset/                segments_*.jsonl + manifest
 examples/sample-run/    пример отчёта
 .github/workflows/      run-mn.yml, apply-only.yml, run-shard.yml
@@ -37,7 +38,9 @@ examples/sample-run/    пример отчёта
 - Все 8 шардов Completed; `results/full/shard-*/.../edits.jsonl` скачаны.
 - Слито в `work/edits_full.jsonl`: 1506 строк.
 - Применено: **1020** (567 replace + 453 insert), **486 disputed**, 0 errors, 0 renamed.
-- Ветка `rename` в `offline-data`: `c7a6f0c`, 48 файлов, +1020/−1020.
+- Ветка `rename` в `offline-data`: `6030da2`, 48 файлов, +1020/−1020, 2 коммита.
+- Поверх модели применены 12 ручных post-фиксов (`work/manual-fixes.yaml`): mn103/136/144/15/28.
+- `mn103:15.5`, `16.2`, `16.4` проверены — уже корректны, не менялись.
 - Осталось: 16 anchors not found, 3 lowercase name additions, 1 target count, 1 punctuation.
 - `main` — `8e1e69f`; не трогать.
 - Ручные правки — через `work/insertions.yaml` + workflow `apply-only`.
