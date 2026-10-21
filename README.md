@@ -150,11 +150,28 @@ skip: []
 Settings → Secrets and variables → Actions → New repository secret:
 
 - `KAGGLE_API_TOKEN` — токен Kaggle (тот же, что в `~/.secrets/tools.env`).
-- `OFFLINE_DATA_TOKEN` — GitHub PAT с правом **Contents: write** на
-  `dhammagift/offline-data` (нужен, чтобы workflow пушил ветку `rename`).
+- `OFFLINE_DATA_SSH_KEY` — приватный SSH deploy key с write-доступом
+  к `dhammagift/offline-data` (нужен, чтобы workflow пушил ветку `rename`).
 
 Секрет шифруется, после сохранения не показывается и в логи не попадает.
 **Не коммитить токены в репозиторий.**
+
+### Deploy key без PAT
+
+Обычный `GITHUB_TOKEN` не может пушить в другой репозиторий, поэтому нужен deploy key:
+
+```bash
+ssh-keygen -t ed25519 -C "otrn-actions" -f ~/otrn_deploy -N ""
+cat ~/otrn_deploy.pub
+# offline-data -> Settings -> Deploy keys -> Add deploy key
+#   -> вставить публичный ключ -> Allow write access
+cat ~/otrn_deploy
+# otrn -> Settings -> Secrets and variables -> Actions
+#   -> OFFLINE_DATA_SSH_KEY -> вставить приватный ключ
+```
+
+Workflow сам добавляет `github.com` в `known_hosts` и клонирует
+`git@github.com:dhammagift/offline-data.git`.
 
 ### Полный прогон
 

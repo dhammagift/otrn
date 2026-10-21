@@ -427,30 +427,40 @@ input[type=search]{{padding:6px;width:320px;margin:8px 0}}
             check=True,
         )
     if args.push and applied:
-        token = os.environ.get("GITHUB_TOKEN", "")
-        if not token:
-            secrets = Path("/root/.secrets/tools.env")
-            if secrets.exists():
-                text = secrets.read_text(encoding="utf-8")
-                m = re.search(r"^GITHUB_TOKEN=['\"]?([^'\"\n]+)", text, re.M)
-                token = m.group(1) if m else ""
-        if not token:
-            raise SystemExit("GITHUB_TOKEN not found (set env or /root/.secrets/tools.env)")
-        auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
-        subprocess.run(
-            [
-                "git",
-                "-C",
-                str(repo),
-                "-c",
-                f"http.extraHeader=Authorization: Basic {auth}",
-                "push",
-                "--force",
-                "origin",
-                f"HEAD:{args.branch}",
-            ],
-            check=True,
-        )
+        remote = subprocess.check_output(
+            ["git", "-C", str(repo), "remote", "get-url", "origin"], text=True
+        ).strip()
+        if remote.startswith(("git@", "ssh://")):
+            # SSH deploy key (no PAT)
+            subprocess.run(
+                ["git", "-C", str(repo), "push", "--force", "origin", f"HEAD:{args.branch}"],
+                check=True,
+            )
+        else:
+            token = os.environ.get("GITHUB_TOKEN", "")
+            if not token:
+                secrets = Path("/root/.secrets/tools.env")
+                if secrets.exists():
+                    text = secrets.read_text(encoding="utf-8")
+                    m = re.search(r"^GITHUB_TOKEN=['\"]?([^'\"\n]+)", text, re.M)
+                    token = m.group(1) if m else ""
+            if not token:
+                raise SystemExit("GITHUB_TOKEN not found (set env or /root/.secrets/tools.env)")
+            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(repo),
+                    "-c",
+                    f"http.extraHeader=Authorization: Basic {auth}",
+                    "push",
+                    "--force",
+                    "origin",
+                    f"HEAD:{args.branch}",
+                ],
+                check=True,
+            )
     print(f"report: {out/'report.html'}")
     if args.push and applied:
         print(f"compare: {REPO_URL}/compare/main...{args.branch}")

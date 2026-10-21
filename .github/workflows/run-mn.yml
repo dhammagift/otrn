@@ -63,13 +63,19 @@ jobs:
           pattern: shard-*
           path: results/full
 
-      - name: Clone offline-data
+      - name: Setup deploy key
         env:
-          TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
+          SSH_KEY: ${{ secrets.OFFLINE_DATA_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone offline-data
         run: |
           git clone --filter=blob:none --sparse --depth 1 \
-            "https://x-access-token:${TOKEN}@github.com/dhammagift/offline-data.git" \
-            offline-data
+            git@github.com:dhammagift/offline-data.git offline-data
           git -C offline-data sparse-checkout set \
             dhammagift/translation/ru \
             forAI \
@@ -79,8 +85,6 @@ jobs:
         run: python work/merge_shards.py --count 8
 
       - name: Apply and push rename
-        env:
-          GITHUB_TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
         run: |
           python work/apply_edits.py \
             --edits work/edits_full.jsonl \
