@@ -215,6 +215,19 @@ overrides:
 skip: ["mn101:11.5"]       # пропустить совсем
 ```
 
+### Нормализация стиля
+
+```bash
+python work/normalize_comrades.py \
+  --repo offline-data \
+  --report out-normalize.tsv \
+  --apply
+```
+
+Скрипт сканирует все MN-файлы: ставит «товарищ» после имени/обращения,
+добавляет запятую (`Сарипутта товарищ` → `Сарипутта, товарищ`),
+`Товарищи монахи` → `Монахи, товарищи`. Без `--apply` — только отчёт.
+
 ### Один шард
 
 Actions → **kaggle-shard** → Run workflow (index, count).

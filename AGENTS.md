@@ -28,6 +28,7 @@ work/apply_edits.py     валидация, splice, rename/archive, отчёт, 
 work/insertions.yaml    ручные overrides: insert / replace / keep / skip
 work/edits_full.jsonl   замороженный полный результат (1506)
 work/manual-fixes.yaml  ручные post-фиксы после прогона (пунктуация/артефакты)
+work/normalize_comrades.py  постпозиция «товарищ» + запятые (сканирует все MN)
 dataset/                segments_*.jsonl + manifest
 examples/sample-run/    пример отчёта
 .github/workflows/      run-mn.yml, apply-only.yml, run-shard.yml
@@ -38,8 +39,9 @@ examples/sample-run/    пример отчёта
 - Все 8 шардов Completed; `results/full/shard-*/.../edits.jsonl` скачаны.
 - Слито в `work/edits_full.jsonl`: 1506 строк.
 - Применено: **1020** (567 replace + 453 insert), **486 disputed**, 0 errors, 0 renamed.
-- Ветка `rename` в `offline-data`: `6030da2`, 48 файлов, +1020/−1020, 2 коммита.
+- Ветка `rename` в `offline-data`: `d4daa2e`, 48 файлов, +1029/−1029, 3 коммита.
 - Поверх модели применены 12 ручных post-фиксов (`work/manual-fixes.yaml`): mn103/136/144/15/28.
+- `normalize_comrades.py`: 228 значений в 29 файлах — «Имя товарищ» → «Имя, товарищ», «Товарищи монахи» → «Монахи, товарищи».
 - `mn103:15.5`, `16.2`, `16.4` проверены — уже корректны, не менялись.
 - Осталось: 16 anchors not found, 3 lowercase name additions, 1 target count, 1 punctuation.
 - `main` — `8e1e69f`; не трогать.
@@ -88,6 +90,15 @@ python work/apply_edits.py \
   --edits work/edits_full.jsonl \
   --config work/insertions.yaml \
   --push
+```
+
+Нормализация стиля (dry-run по умолчанию):
+
+```bash
+python work/normalize_comrades.py \
+  --repo offline-data \
+  --report out-normalize.tsv \
+  --apply
 ```
 
 Скачать конкретный шард:
