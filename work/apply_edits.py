@@ -11,7 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
@@ -62,7 +62,7 @@ def remove_ci(text: str, sub: str) -> str | None:
     return text[:i] + text[i + len(sub) :]
 
 
-def validate_replace(edit: dict) -> tuple[bool, str]:
+def validate_replace(edit: dict, allow_name_addition: bool = True) -> tuple[bool, str]:
     if edit.get("action") != "replace":
         return False, "not replace"
     source = edit.get("source") or ""
@@ -76,12 +76,22 @@ def validate_replace(edit: dict) -> tuple[bool, str]:
         return False, "empty RU segment"
     if old not in ru:
         return False, "old not found in RU"
-    old_wo = remove_ci(old, source)
-    new_wo = remove_ci(new, target)
-    if old_wo is None:
+    # The model sometimes returns only old/new (no source/target).
+    # Infer them, then replace ALL occurrences so "друг … друг" -> "товарищ … товарищ" works.
+    if not source:
+        source = next((w for w in words(old) if lemma(w) == "друг"), "")
+    if not target:
+        target = next((w for w in words(new) if lemma(w) == "товарищ"), "")
+    if not source or source.casefold() not in old.casefold():
         return False, "source not in old"
-    if new_wo is None:
+    if not target or target.casefold() not in new.casefold():
         return False, "target not in new"
+    old_count = len(re.findall(re.escape(source), old, flags=re.IGNORECASE))
+    new_count = len(re.findall(re.escape(target), new, flags=re.IGNORECASE))
+    if old_count != new_count:
+        return False, "target count changed"
+    old_wo = re.sub(re.escape(source), "", old, flags=re.IGNORECASE)
+    new_wo = re.sub(re.escape(target), "", new, flags=re.IGNORECASE)
     if ru.count(old) != 1:
         return False, "old is not unique"
     if lemma(source) != "друг":
@@ -90,8 +100,17 @@ def validate_replace(edit: dict) -> tuple[bool, str]:
         return False, f"target lemma is {lemma(target)!r}, not 'товарищ'"
     if len(words(old)) > MAX_WORDS:
         return False, "span too long"
-    if sorted(w.casefold() for w in words(old_wo)) != sorted(w.casefold() for w in words(new_wo)):
+    co = Counter(w.casefold() for w in words(old_wo))
+    cn = Counter(w.casefold() for w in words(new_wo))
+    if list((co - cn).elements()):
         return False, "other words changed"
+    extra = list((cn - co).elements())
+    if extra:
+        if not allow_name_addition or len(extra) != 1:
+            return False, "other words changed"
+        extra_word = next((w for w in words(new_wo) if w.casefold() == extra[0]), "")
+        if not extra_word or not extra_word[0].isupper():
+            return False, "other words changed"
     if punct(old) != punct(new):
         return False, "punctuation changed"
     if float(edit.get("confidence") or 0) < CONF_MIN:
@@ -136,10 +155,16 @@ def normalize_insert(edit: dict, cfg: dict) -> tuple[dict | None, str]:
         before, after = "", ru.rstrip()
     # Build the exact old substring from the raw anchors. If the user's
     # override omits the boundary space, add it.
-    if before_raw and after_raw and not before_raw[-1].isspace() and not after_raw[0].isspace():
-        # Keep a boundary space even when the left anchor ends with a comma:
-        # "Точно так же," + "монах" -> "Точно так же, монах".
-        combined = before_raw + " " + after_raw
+    if before_raw and after_raw:
+        left, right = before_raw[-1], after_raw[0]
+        opening = "“«„("
+        closing = "”»).,;:!?…"
+        if left.isspace() or right.isspace() or left in opening or right in closing:
+            # “ + По, же, + монах, давно + . Три — без лишнего пробела
+            combined = before_raw + after_raw
+        else:
+            # же, + монах -> "же, монах"
+            combined = before_raw + " " + after_raw
     else:
         combined = before_raw + after_raw
     combined = combined.strip()
@@ -187,7 +212,7 @@ def classify(edit: dict, cfg: dict) -> tuple[str, str, dict]:
         for field in ("source", "target", "old", "new"):
             if field in ov:
                 e[field] = ov[field]
-        ok, why = validate_replace(e)
+        ok, why = validate_replace(e, cfg.get("allow_name_addition", True))
         return ("applied", "ok", e) if ok else ("disputed", why, e)
     # A manual override can turn any row (even a model "keep") into an insert.
     if ov and (ov.get("insert") or ov.get("anchor_before") or ov.get("anchor_after")):
@@ -202,7 +227,7 @@ def classify(edit: dict, cfg: dict) -> tuple[str, str, dict]:
             return "applied", "ok", norm
         return "disputed", why, edit
     if action == "replace":
-        ok, why = validate_replace(edit)
+        ok, why = validate_replace(edit, cfg.get("allow_name_addition", True))
         if ok:
             return "applied", "ok", edit
         return "disputed", why, edit
@@ -217,6 +242,7 @@ def load_config(path: Path | None) -> dict:
     cfg = {
         "enabled": True,
         "use_model_insertions": True,
+        "allow_name_addition": True,
         "separator": ", ",
         "overrides": {},
         "skip": [],

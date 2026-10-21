@@ -36,10 +36,12 @@ examples/sample-run/    пример отчёта
 
 - Все 8 шардов Completed; `results/full/shard-*/.../edits.jsonl` скачаны.
 - Слито в `work/edits_full.jsonl`: 1506 строк.
-- Применено: **999** (563 replace + 436 insert), **507 disputed**, 0 errors, 0 renamed.
-- Ветка `rename` в `offline-data`: `6350bb4`, 48 файлов, +999/−999.
+- Применено: **1020** (567 replace + 453 insert), **486 disputed**, 0 errors, 0 renamed.
+- Ветка `rename` в `offline-data`: `c7a6f0c`, 48 файлов, +1020/−1020.
+- Осталось: 16 anchors not found, 3 lowercase name additions, 1 target count, 1 punctuation.
 - `main` — `8e1e69f`; не трогать.
 - Ручные правки — через `work/insertions.yaml` + workflow `apply-only`.
+- Для replace разрешено добавлять одно имя с заглавной (`allow_name_addition`).
 - `run-mn` — для нового прогона модели (новые `edits`).
 
 ## Секреты

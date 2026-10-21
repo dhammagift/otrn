@@ -1,6 +1,7 @@
 # Ручные правки для apply-only. Меняется прямо на GitHub, без ИИ.
 enabled: true
 use_model_insertions: true
+allow_name_addition: true
 separator: ", "
 
 overrides:

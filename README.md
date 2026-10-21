@@ -130,6 +130,7 @@ python work/apply_edits.py \
 
 ```yaml
 use_model_insertions: true   # false = только overrides
+allow_name_addition: true    # разрешить добавлять имя с заглавной в replace
 separator: ", "
 overrides:
   "mn32:9.10":
