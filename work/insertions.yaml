@@ -1,11 +1,33 @@
-# Ручные правки вставок для пропущенного āvuso.
-# Меняйте anchor_before / insert / anchor_after и перезапускайте apply без ИИ.
+# Ручные правки для apply-only. Меняется прямо на GitHub, без ИИ.
 enabled: true
 use_model_insertions: true
 separator: ", "
+
 overrides:
+  # Пример вставки (уже применён в полном прогоне):
   "mn32:9.10":
     insert: "Моггаллана товарищ"
     anchor_before: "Это как"
     anchor_after: "если бы"
+
+  # Полностью убрать правку модели:
+  # "mn5:2.3":
+  #   action: keep
+
+  # Исправить replace:
+  # "mn32:2.2":
+  #   action: replace
+  #   source: "Друг"
+  #   target: "товарищ"
+  #   old: "Друг Кассапа"
+  #   new: "Кассапа товарищ"
+
+  # Вставить вручную:
+  # "mn101:11.5":
+  #   action: insert
+  #   insert: "Моггаллана товарищ"
+  #   anchor_before: "…"
+  #   anchor_after: "…"
+
+# Полностью пропустить ключи (любое действие):
 skip: []

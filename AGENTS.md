@@ -25,27 +25,22 @@ work/run_shard.py       запуск шарда в Benchmarks
 work/run_full.py        один длинный прогон
 work/merge_shards.py    слияние shard-*/edits.jsonl
 work/apply_edits.py     валидация, splice, rename/archive, отчёт, push
-work/insertions.yaml    ручные overrides вставок
+work/insertions.yaml    ручные overrides: insert / replace / keep / skip
+work/edits_full.jsonl   замороженный полный результат (1506)
 dataset/                segments_*.jsonl + manifest
 examples/sample-run/    пример отчёта
-.github/workflows/      run-mn.yml (8 шардов + apply), run-shard.yml
+.github/workflows/      run-mn.yml, apply-only.yml, run-shard.yml
 ```
 
-## Текущее состояние (2026-10-21)
+## Текущее состояние (2026-10-21, после полного прогона)
 
-- Шард `mn-avuso-full-0`: **Completed**, скачан в
-  `/root/rename/results/full/shard-0/.../edits.jsonl`
-  (189 строк: 92 replace, 26 insert, 71 keep).
-- Шарды `1..7`: на момент записи **Running**; локальные `run_shard.py`
-  скачают их сами. Всегда проверяй статус, а не доверяй этому файлу:
-  ```bash
-  kaggle b t status mn-avuso-full-N
-  ```
-- Ветка `rename` в `offline-data` пока содержит **пробный** результат
-  (80 сегментов: 42 replace + 22 insert, коммит `e381cef`).
-  Полный MN ещё **не применён**.
+- Все 8 шардов Completed; `results/full/shard-*/.../edits.jsonl` скачаны.
+- Слито в `work/edits_full.jsonl`: 1506 строк.
+- Применено: **999** (563 replace + 436 insert), **507 disputed**, 0 errors, 0 renamed.
+- Ветка `rename` в `offline-data`: `6350bb4`, 48 файлов, +999/−999.
 - `main` — `8e1e69f`; не трогать.
-- Полный прогон = 1506 строк, 8 шардов.
+- Ручные правки — через `work/insertions.yaml` + workflow `apply-only`.
+- `run-mn` — для нового прогона модели (новые `edits`).
 
 ## Секреты
 
@@ -132,6 +127,7 @@ kaggle b t download mn-avuso-full-0 -o results/full/shard-0 -f
 `run-mn.yml`: 8 shard-jobs (matrix) + apply-job.
 Секреты: `KAGGLE_API_TOKEN`, `OFFLINE_DATA_TOKEN` (fine-grained PAT).
 `run-shard.yml`: один шард.
+`apply-only.yml`: применяет `work/edits_full.jsonl` + `work/insertions.yaml` без ИИ и без шардов.
 
 `apply_edits.py` поддерживает HTTPS PAT и SSH deploy key.
 

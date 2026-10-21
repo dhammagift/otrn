@@ -176,7 +176,19 @@ def normalize_insert(edit: dict, cfg: dict) -> tuple[dict | None, str]:
 
 def classify(edit: dict, cfg: dict) -> tuple[str, str, dict]:
     key = edit.get("key", "")
+    if key in (cfg.get("skip") or []):
+        return "disputed", "skip list", edit
     ov = (cfg.get("overrides") or {}).get(key) or {}
+    if ov.get("action") == "keep":
+        return "disputed", "override keep", edit
+    # Manual replace: override old/new (and optionally source/target).
+    if ov.get("action") == "replace":
+        e = {**edit, "action": "replace"}
+        for field in ("source", "target", "old", "new"):
+            if field in ov:
+                e[field] = ov[field]
+        ok, why = validate_replace(e)
+        return ("applied", "ok", e) if ok else ("disputed", why, e)
     # A manual override can turn any row (even a model "keep") into an insert.
     if ov and (ov.get("insert") or ov.get("anchor_before") or ov.get("anchor_after")):
         norm, why = normalize_insert({**edit, "action": "insert"}, cfg)

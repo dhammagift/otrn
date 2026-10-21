@@ -1,0 +1,51 @@
+name: apply-only
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pymorphy3 pyyaml
+
+      - name: Clone offline-data
+        env:
+          TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
+        run: |
+          git clone --filter=blob:none --sparse --depth 1 \
+            "https://x-access-token:${TOKEN}@github.com/dhammagift/offline-data.git" \
+            offline-data
+          git -C offline-data sparse-checkout set \
+            dhammagift/translation/ru \
+            forAI \
+            dhammagift/svEtc/automatic
+
+      - name: Apply edits with insertions.yaml
+        env:
+          GITHUB_TOKEN: ${{ secrets.OFFLINE_DATA_TOKEN }}
+        run: |
+          python work/apply_edits.py \
+            --edits work/edits_full.jsonl \
+            --config work/insertions.yaml \
+            --model "apply-only (manual config)" \
+            --push
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: out/
+          if-no-files-found: ignore

@@ -181,6 +181,39 @@ Actions → **run-mn** → Run workflow:
 
 `apply: false` — только шарды и артефакты, без пуша ветки.
 
+### Ручная правка после прогона
+
+Модель уже отработала — менять можно без ИИ:
+
+1. Открой `work/insertions.yaml` прямо на GitHub → карандаш.
+2. Добавь override, `action: keep` или `skip`.
+3. Actions → **apply-only** → Run workflow.
+
+`apply-only` берёт `work/edits_full.jsonl` (1506 готовых решений) и ваш YAML,
+применяет и пушит `rename`. Без Kaggle, без шардов.
+
+Примеры:
+
+```yaml
+overrides:
+  "mn32:9.10":
+    insert: "Моггаллана товарищ"
+    anchor_before: "Это как"
+    anchor_after: "если бы"
+
+  "mn5:2.3":
+    action: keep           # убрать правку модели
+
+  "mn32:2.2":
+    action: replace        # исправить replace
+    source: "Друг"
+    target: "товарищ"
+    old: "Друг Кассапа"
+    new: "Кассапа товарищ"
+
+skip: ["mn101:11.5"]       # пропустить совсем
+```
+
 ### Один шард
 
 Actions → **kaggle-shard** → Run workflow (index, count).
